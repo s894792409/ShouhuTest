@@ -1,0 +1,68 @@
+<LinearLayout
+    android:layout_width="310dp"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/public_dialogshape"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <TextView
+        android:id="@+id/util_dialogconfirm_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        android:textColor="#333333"
+        android:textSize="18sp"/>
+
+    <TextView
+        android:id="@+id/util_dialogconfirm_message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
+        android:textSize="16dp"
+        android:textColor="#999999" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_marginTop="16dp"
+        android:background="#000000" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/util_dialogconfirm_no"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@null"
+            android:gravity="center"
+            android:singleLine="true"
+            android:textColor="#999999"
+            android:textSize="18sp" />
+
+        <View
+            android:id="@+id/column_line"
+            android:layout_width="1px"
+            android:layout_height="match_parent"
+            android:background="@color/black" />
+
+        <Button
+            android:id="@+id/util_dialogconfirm_yes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@null"
+            android:gravity="center"
+            android:singleLine="true"
+            android:textColor="@color/bigButton"
+            android:textSize="18sp" />
+    </LinearLayout>
+</LinearLayout>

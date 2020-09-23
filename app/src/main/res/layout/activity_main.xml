@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    tools:context=".MainActivity">
+
+    <Button
+        android:id="@+id/get_app_list"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="获取文件列表"/>
+
+    <Button
+        android:id="@+id/location_test"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="定位测试1"/>
+
+    <Button
+        android:id="@+id/location_test2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="定位测试2"/>
+
+    <Button
+        android:id="@+id/foreground_service"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="前台进程"/>
+
+    <Button
+        android:id="@+id/add_account"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="添加账户"/>
+
+</LinearLayout>

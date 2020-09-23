@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#008577</color>
+    <color name="colorPrimaryDark">#00574B</color>
+    <color name="colorAccent">#D81B60</color>
+    <color name="white">#FFFFFF</color>
+    <color name="blue">#4787e1</color>
+    <color name="gray">#ECECEC</color>
+    <color name="gray_background">#f4f5f9</color>
+    <color name="black">#000000</color>
+    <color name="filter_text">#3d3d3d</color>
+    <color name="scan_bottom_border">#e2e2e2</color>
+    <color name="red">#FF0000</color>
+    <color name="member_login_code">#94AAAAAA</color>
+    <color name="onclickText" >#23B7FF</color>
+    <color name="bigButton">#6492ff</color>
+    <color name="goBuy">#96b5ff</color>
+    <color name="test">#46000000</color>
+    <color name="member_memberList">#515151</color>
+    <color name="light_blue">#C5D0FF</color>
+    <color name="time">#AC4E4E</color>
+    <color name="below">#FDECECEC</color>
+    <color name="progress_background">#d2defe</color>
+    <color name="progress_foreground">#6492ff</color>
+    <color name = "translucent_background">#00000000</color>
+    <color name="member_member_backg">#27FFFFFF</color>
+    <color name="loading_title_blue">#82a6fd</color>
+    <color name="gray_text">#9c9c9c</color>
+    <color name="order_title">#727272</color>
+    <color name="order_price">#656667</color>
+    <color name="order_original_price">#939393</color>
+    <color name="document_item_converting_color">#82a6fe</color>
+    <color name="document_item_success_color">#43e4c3</color>
+</resources>
+

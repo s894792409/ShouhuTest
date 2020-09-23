@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.shouhutest">
+    <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS"/>
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS"/>
+    <!-- 网络权限 -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <!-- 用于进行网络定位 -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <!-- 用于访问GPS定位 -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+    <!-- 用于获取wifi的获取权限，wifi信息会用来进行网络定位 -->
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.REORDER_TASKS" />
+    <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity android:name=".KeepActive.KeepActivity"
+            android:excludeFromRecents="true"
+            android:taskAffinity="com.example.shouhutest2"
+            android:theme="@style/TransparentTheme"/>
+        <activity android:name=".AppList" />
+        <activity android:name=".Location.LocationTest2" />
+        <activity android:name=".Location.LocationTest" />
+        <activity android:name=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <service
+            android:name=".KeepActive.ForegroundService"
+            android:persistent="true"
+            android:priority="1000"
+            android:foregroundServiceType="location" />
+
+        <service android:name=".Account.AuthenticationService">
+            <intent-filter>
+                <action android:name="android.accounts.AccountAuthenticator"/>
+            </intent-filter>
+
+            <meta-data android:name="android.accounts.AccountAuthenticator"
+                android:resource="@xml/account_authenticator"/>
+        </service>
+
+
+        <service android:name=".Account.SyncService">
+            <intent-filter>
+                <action android:name="android.content.SyncAdapter"/>
+            </intent-filter>
+
+            <meta-data android:name="android.content.SyncAdapter"
+                android:resource="@xml/sync_adapter"/>
+        </service>
+
+        <provider
+            android:name=".Account.SyncProvider"
+            android:authorities="com.example.shouhutest.provider"
+            android:exported="false"
+            android:syncable="true"/>
+    </application>
+
+</manifest>
