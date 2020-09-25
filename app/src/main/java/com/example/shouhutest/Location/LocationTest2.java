@@ -225,7 +225,7 @@ public class LocationTest2 extends AppCompatActivity {
             }
 
         } else {
-            getLocation();
+//            getLocation();
         }
     }
 

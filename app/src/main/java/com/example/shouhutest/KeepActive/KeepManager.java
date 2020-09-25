@@ -21,6 +21,8 @@ public class KeepManager {
         IntentFilter filter = new IntentFilter();
         filter.addAction(Intent.ACTION_SCREEN_ON);
         filter.addAction(Intent.ACTION_SCREEN_OFF);
+        filter.addAction(Intent.ACTION_CLOSE_SYSTEM_DIALOGS);
+        filter.addAction("vivo.intent.action.UPSLIDE_PANEL_STATE_CHANGED");
         mKeepReceiver = new KeepReceiver();
         context.registerReceiver(mKeepReceiver,filter);
     }

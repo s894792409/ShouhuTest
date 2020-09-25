@@ -1,6 +1,9 @@
 package com.example.shouhutest;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
+import android.provider.Settings;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,6 +57,13 @@ class AppListAdapter extends BaseAdapter {
         holder.versionCode.setText(String.valueOf(appInfo.versionCode));
         holder.packageName.setText(appInfo.packageName);
 
+        holder.rootView.setOnClickListener(v -> {
+            Intent LaunchIntent = context.getPackageManager().getLaunchIntentForPackage(appInfo.packageName);
+            context.startActivity(LaunchIntent);
+//            Uri packageURI = Uri.parse("package:" + appInfo.packageName);
+//            Intent intent =  new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS,packageURI);
+//            context.startActivity(intent);
+        });
         return convertView;
     }
 

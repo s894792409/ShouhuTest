@@ -1,12 +1,16 @@
 package com.example.shouhutest.KeepActive;
 
+import android.app.Activity;
+import android.app.ActivityManager;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.IBinder;
@@ -18,6 +22,8 @@ import androidx.annotation.RequiresApi;
 import com.example.shouhutest.MainActivity;
 import com.example.shouhutest.R;
 import com.google.android.gms.common.api.Api;
+
+import java.util.List;
 
 public class ForegroundService extends Service {
 
@@ -60,9 +66,22 @@ public class ForegroundService extends Service {
 
         new Thread(()->{
             while (true){
-                Log.e("TAG", "onStartCommand: Thread!!!");
+                final ActivityManager am = (ActivityManager)getSystemService(Context.ACTIVITY_SERVICE);
+                ActivityInfo aInfo = null;
+                List<ActivityManager.RunningTaskInfo> list = am.getRunningTasks(1);
+                if (list.size() != 0) {
+                    ActivityManager.RunningTaskInfo topRunningTask = list.get(0);
+                    ComponentName topActivity = topRunningTask.topActivity;
+                    Log.e("TAG", "onStartCommand:TopActivity  getClassName:"+topActivity.getClassName()+" getPackageName:"+topActivity.getPackageName());
+
+                } else {
+                    Log.e("TAG", "onStartCommand: 当前栈顶应用为空");
+                }
+
+
+
                 try {
-                    Thread.sleep(100);
+                    Thread.sleep(500);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }

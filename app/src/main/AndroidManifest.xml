@@ -3,7 +3,11 @@
     package="com.example.shouhutest">
     <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS"/>
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
     <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS"/>
+
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.SYSTEM_OVERLAY_WINDOW" />
     <!-- 网络权限 -->
     <uses-permission android:name="android.permission.INTERNET" />
     <!-- 用于进行网络定位 -->
@@ -17,6 +21,8 @@
     <uses-permission android:name="android.permission.REORDER_TASKS" />
     <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -25,6 +31,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".Desktop.Desktop" android:launchMode="singleInstance">
+            <intent-filter>
+                <category android:name="android.intent.category.HOME" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
         <activity android:name=".KeepActive.KeepActivity"
             android:excludeFromRecents="true"
             android:taskAffinity="com.example.shouhutest2"
@@ -32,13 +44,24 @@
         <activity android:name=".AppList" />
         <activity android:name=".Location.LocationTest2" />
         <activity android:name=".Location.LocationTest" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity"
+            android:launchMode="singleInstance">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+
+        <receiver android:name=".KeepActive.KeepReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.CLOSE_SYSTEM_DIALOGS"/>
+                <action android:name="android.intent.action.SCREEN_OFF"/>
+                <action android:name="android.intent.action.SCREEN_ON"/>
+                <action android:name="vivo.intent.action.UPSLIDE_PANEL_STATE_CHANGED"/>
+            </intent-filter>
+        </receiver>
 
         <service
             android:name=".KeepActive.ForegroundService"
@@ -70,6 +93,30 @@
             android:authorities="com.example.shouhutest.provider"
             android:exported="false"
             android:syncable="true"/>
+
+        <service android:name=".Accessibility.AccessibilitySampleService"
+            android:label="@string/app_name"
+            android:exported="true"
+            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
+            <intent-filter>
+                <action android:name="android.accessibilityservice.AccessibilityService" />
+            </intent-filter>
+            <!--// 通过xml文件完成辅助功能相关配置，也可以在onServiceConnected中动态配置-->
+            <meta-data
+                android:name="android.accessibilityservice"
+                android:resource="@xml/accessibility_config"/>
+        </service>
+
+
+        <activity
+            android:name=".Accessibility.AccessibilityOpenHelperActivity"
+            android:excludeFromRecents="true"
+            android:launchMode="singleTask"
+            android:taskAffinity="com.open.helper"
+            android:theme="@style/Accessibility.Transparent.Activity" />
+
+
+        <activity android:name=".Accessibility.AccessibilityNormalSample"/>
     </application>
 
 </manifest>
