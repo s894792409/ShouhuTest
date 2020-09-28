@@ -72,11 +72,11 @@ public class DesktopWindow {
 
 
 
-    public void showDesktopWindow(Context context){
+    public void showDesktopWindow(){
         if (isShowing) return;
         Log.e(TAG, "showDesktopWindow: ");
 
-        ContentView = LayoutInflater.from(context).inflate(R.layout.activity_desktop,null);
+//        ContentView = LayoutInflater.from(context).inflate(R.layout.activity_desktop,null);
         mGridView=ContentView.findViewById(R.id.mgv);
         //设置背景
         WallpaperManager manager =WallpaperManager.getInstance(context);
@@ -84,7 +84,7 @@ public class DesktopWindow {
         LinearLayout linearLayout = ContentView.findViewById(R.id.desktop_linear);
         linearLayout.setBackground(drawable);
 
-        WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+//        WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
         // 设置宽高
         layoutParams.width = WindowManager.LayoutParams.MATCH_PARENT;

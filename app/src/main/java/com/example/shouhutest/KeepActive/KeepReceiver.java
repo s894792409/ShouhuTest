@@ -69,8 +69,8 @@ class KeepReceiver extends BroadcastReceiver {
                 KeepManager.getInstance().finishKeep();
             } else if (action.equals(Intent.ACTION_CLOSE_SYSTEM_DIALOGS)) {
 
-                jumpToDesktop(context);
-            /*    if (MyApplication.desktopWindow == null) {
+//                jumpToDesktop(context);
+                if (MyApplication.desktopWindow == null) {
                     MyApplication.desktopWindow = new DesktopWindow(context);
                     Log.e(TAG, "onReceive: 实例化DesktopWindow");
                 }
@@ -80,8 +80,7 @@ class KeepReceiver extends BroadcastReceiver {
                     Log.e(TAG, "onReceive: Context不一样");
                 }
 
-                if (!MyApplication.desktopWindow.isShowing) MyApplication.desktopWindow.showDesktopWindow(context);
-*/
+                if (!MyApplication.desktopWindow.isShowing) MyApplication.desktopWindow.showDesktopWindow();
 //                showDesktopWindow(context);
 
 //                addDesktopWindow(context);
