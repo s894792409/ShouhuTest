@@ -8,7 +8,10 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.LinearLayout;
@@ -24,11 +27,14 @@ public class Desktop extends AppCompatActivity {
 
     List<AppInfo> appInfos;
     GridView mGridView;
+    public static int TaskID=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);//去掉标题拦
         setContentView(R.layout.activity_desktop);
+
         mGridView=findViewById(R.id.mgv);
         //设置背景
         WallpaperManager manager =WallpaperManager.getInstance(this);
@@ -40,6 +46,22 @@ public class Desktop extends AppCompatActivity {
         initAppList();
     }
 
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        TaskID=getTaskId();
+        Log.e("Desktop", "onResume: TaskID:"+TaskID);
+    }
+
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode==KeyEvent.KEYCODE_BACK || keyCode==KeyEvent.KEYCODE_MENU || keyCode==KeyEvent.KEYCODE_HOME){
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
 
     private void initAppList() {
         appInfos=GetAppList1(this);

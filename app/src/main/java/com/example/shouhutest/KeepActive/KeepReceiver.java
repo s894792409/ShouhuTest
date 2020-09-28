@@ -2,10 +2,13 @@ package com.example.shouhutest.KeepActive;
 
 import android.app.ActivityManager;
 import android.app.Instrumentation;
+import android.app.PendingIntent;
+import android.app.WallpaperManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.PixelFormat;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Debug;
@@ -18,19 +21,27 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.GridView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import androidx.annotation.ContentView;
 import androidx.annotation.RequiresApi;
 
 import com.example.shouhutest.Accessibility.AccessibilityOperator;
 import com.example.shouhutest.Account.AccountHelper;
 import com.example.shouhutest.Account.AuthenticationService;
 import com.example.shouhutest.AppList;
+import com.example.shouhutest.Desktop.AppInfo;
+import com.example.shouhutest.Desktop.DeskTopGridViewBaseAdapter;
 import com.example.shouhutest.Desktop.Desktop;
+import com.example.shouhutest.Desktop.DesktopWindow;
 import com.example.shouhutest.Location.LocationTest;
 import com.example.shouhutest.Location.LocationTest2;
 import com.example.shouhutest.MainActivity;
+import com.example.shouhutest.MyApplication;
 import com.example.shouhutest.R;
 
 import java.util.ArrayList;
@@ -50,23 +61,6 @@ class KeepReceiver extends BroadcastReceiver {
             String action = intent.getAction();
             Log.e(TAG, "onReceive: action:"+action );
 
-            ActivityManager activityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
-
-    /*    List<ActivityManager.RunningAppProcessInfo> amList = activityManager.getRunningAppProcesses();
-        List<ActivityManager.RunningTaskInfo> runningTaskInfoList = activityManager.getRunningTasks(Integer.MAX_VALUE);
-        for (ActivityManager.RunningTaskInfo runningTaskInfo : runningTaskInfoList){
-            if (runningTaskInfo.baseIntent.getPackage().equals(context.getPackageName()))
-        }*/
-
-      /*  List<ActivityManager.AppTask> list = activityManager.getAppTasks();
-        for (ActivityManager.AppTask appTask : list){
-            Intent s = appTask.getTaskInfo().baseIntent;
-            if (s.getPackage().equals(context.getPackageName())){
-
-                activityManager.moveTaskToFront(appTask.getTaskInfo().taskId, ActivityManager.MOVE_TASK_WITH_HOME);
-            }
-        }*/
-
             if (action.equals(Intent.ACTION_SCREEN_OFF)){
                 Log.e(TAG, "onReceive: 关闭屏幕");
                 KeepManager.getInstance().startKeep(context);
@@ -74,7 +68,29 @@ class KeepReceiver extends BroadcastReceiver {
                 Log.e(TAG, "onReceive: 开启屏幕");
                 KeepManager.getInstance().finishKeep();
             } else if (action.equals(Intent.ACTION_CLOSE_SYSTEM_DIALOGS)) {
-                String reason = intent.getStringExtra(SYSTEM_DIALOG_REASON_KEY);
+
+                jumpToDesktop(context);
+            /*    if (MyApplication.desktopWindow == null) {
+                    MyApplication.desktopWindow = new DesktopWindow(context);
+                    Log.e(TAG, "onReceive: 实例化DesktopWindow");
+                }
+                else if (MyApplication.desktopWindow.context != context){
+                    if (MyApplication.desktopWindow.isShowing()) MyApplication.desktopWindow.DismissDesktopWindow();
+                    MyApplication.desktopWindow = new DesktopWindow(context);
+                    Log.e(TAG, "onReceive: Context不一样");
+                }
+
+                if (!MyApplication.desktopWindow.isShowing) MyApplication.desktopWindow.showDesktopWindow(context);
+*/
+//                showDesktopWindow(context);
+
+//                addDesktopWindow(context);
+//                ActivityManager am= (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+               // jumpToDesktop(context);
+//                Intent intent2 =  new Intent(Settings.ACTION_APPLICATION_DEVELOPMENT_SETTINGS);
+//                context.startActivity(intent2);
+
+               /* String reason = intent.getStringExtra(SYSTEM_DIALOG_REASON_KEY);
                 Log.e(TAG, "onReceive: reason:"+reason );
                 if (reason == null)
                     return;
@@ -83,30 +99,15 @@ class KeepReceiver extends BroadcastReceiver {
                 if (reason.equals(SYSTEM_DIALOG_REASON_HOME_KEY)) {
                     Log.e(TAG, "onReceive: 按下home键");
                     Toast.makeText(context, "按了Home键", Toast.LENGTH_SHORT).show();
-                    context.startActivity(new Intent(context, Desktop.class));
-    //                addWindow(context);
-    //                context.startActivity(new Intent(context, MainActivity.class));
+                    jumpToDesktop(context);
+
                 }
 
                 if (reason.equals(SYSTEM_DIALOG_REASON_RECENT_APPS)) {// 最近任务列表键
                     Log.e(TAG, "onReceive: 按下最近任务列表");
                     Toast.makeText(context, "按了最近任务列表", Toast.LENGTH_SHORT).show();
-                    context.startActivity(new Intent(context, Desktop.class));
-                    //sendKeyCode1(KeyEvent.KEYCODE_BACK);
-                   /* new Thread(()->{
-                        // 可以不用在 Activity 中增加任何处理，各 Activity 都可以响应
-                        Instrumentation inst = new Instrumentation();
-                        inst.sendPointerSync(MotionEvent.obtain(SystemClock.uptimeMillis(),SystemClock.uptimeMillis(),
-                                MotionEvent.ACTION_DOWN, 200, 200, 0));
-                        inst.sendPointerSync(MotionEvent.obtain(SystemClock.uptimeMillis(),SystemClock.uptimeMillis(),
-                                MotionEvent.ACTION_UP, 200, 200, 0));
-                    }).start();*/
-
-                 //  addWindow(context);
-                    Log.e(TAG, "onReceive: isServiceRunning:"+AccessibilityOperator.getInstance().isServiceRunning() );
-                  //  AccessibilityOperator.getInstance().clickBackKey();
-
-                }
+                    jumpToDesktop(context);
+                }*/
 
             }else if (action.equals("vivo.intent.action.UPSLIDE_PANEL_STATE_CHANGED")){
                 //Log.e(TAG, "onReceive: vivo.intent.action.UPSLIDE_PANEL_STATE_CHANGED");
@@ -132,19 +133,34 @@ class KeepReceiver extends BroadcastReceiver {
     }
 
 
-    /**
-     * 用Runtime模拟按键操作
-     *
-     * @param keyCode 按键事件(KeyEvent)的按键值
-     */
-    private void sendKeyCode1(int keyCode) {
+
+    public static void jumpToDesktop(Context context){
+        Intent resultIntent = new Intent(context, Desktop.class);
+        resultIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        resultIntent.addCategory(Intent.CATEGORY_HOME);
         try {
-            String keyCommand = "input keyevent " + keyCode;
-            // 调用Runtime模拟按键操作
-            Runtime.getRuntime().exec(keyCommand);
+            PendingIntent pendingIntent = PendingIntent.getActivity(context,0,resultIntent,0);
+            pendingIntent.send();
         } catch (Exception e) {
             e.printStackTrace();
+            context.startActivity(resultIntent);
         }
+    }
+
+
+
+    public static boolean isRunningForeground(Context context) {
+        ActivityManager activityManager = (ActivityManager)context.getSystemService(Context.ACTIVITY_SERVICE);
+        List<ActivityManager.RunningAppProcessInfo> appProcessInfos = activityManager.getRunningAppProcesses();
+        // 枚举进程
+        for (ActivityManager.RunningAppProcessInfo appProcessInfo : appProcessInfos) {
+            if (appProcessInfo.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND) {
+                if (appProcessInfo.processName.equals(context.getApplicationInfo().processName)) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
 
@@ -206,4 +222,68 @@ class KeepReceiver extends BroadcastReceiver {
         windowManager.addView(contentView, layoutParams);
 
     }
+
+    //添加悬浮窗版桌面
+    public void addDesktopWindow(Context context){
+
+        WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
+        // 设置宽高
+        layoutParams.width = WindowManager.LayoutParams.MATCH_PARENT;
+        layoutParams.height = WindowManager.LayoutParams.MATCH_PARENT;
+        // 设置背景透明
+        // layoutParams.format = PixelFormat.TRANSPARENT;
+        // 设置屏幕左上角为起始点
+        layoutParams.gravity = Gravity.LEFT | Gravity.TOP;
+        // FLAG_LAYOUT_IN_SCREEN：将window放置在整个屏幕之内,无视其他的装饰(比如状态栏)； FLAG_NOT_TOUCH_MODAL：不阻塞事件传递到后面的窗口
+        layoutParams.flags = WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN | WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            layoutParams.type = WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY;
+        } else {
+            // 设置窗体显示类型(TYPE_TOAST:与toast一个级别)
+            layoutParams.type = WindowManager.LayoutParams.TYPE_TOAST;
+        }
+        // 设置布局弹出的动画
+        //            layoutParams.windowAnimations = R.style.anim;
+        if (MyApplication.desktopWindow == null)
+            windowManager.addView(MyApplication.desktopWindow.getContentView(), layoutParams);
+
+    }
+
+
+
+    public void showDesktopWindow(Context context){
+        Log.e(TAG, "showDesktopWindow: ");
+
+        View ContentView = LayoutInflater.from(context).inflate(R.layout.activity_desktop,null);
+        GridView mGridView= ContentView.findViewById(R.id.mgv);
+        //设置背景
+        WallpaperManager manager =WallpaperManager.getInstance(context);
+        Drawable drawable=manager.getDrawable();
+        LinearLayout linearLayout = ContentView.findViewById(R.id.desktop_linear);
+        linearLayout.setBackground(drawable);
+
+        WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
+        // 设置宽高
+        layoutParams.width = WindowManager.LayoutParams.MATCH_PARENT;
+        layoutParams.height = WindowManager.LayoutParams.MATCH_PARENT;
+        // 设置背景透明
+        // layoutParams.format = PixelFormat.TRANSPARENT;
+        // 设置屏幕左上角为起始点
+        layoutParams.gravity = Gravity.LEFT | Gravity.TOP;
+        // FLAG_LAYOUT_IN_SCREEN：将window放置在整个屏幕之内,无视其他的装饰(比如状态栏)； FLAG_NOT_TOUCH_MODAL：不阻塞事件传递到后面的窗口
+        layoutParams.flags = WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN | WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            layoutParams.type = WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY;
+        } else {
+            // 设置窗体显示类型(TYPE_TOAST:与toast一个级别)
+            layoutParams.type = WindowManager.LayoutParams.TYPE_TOAST;
+        }
+        // 设置布局弹出的动画
+        //            layoutParams.windowAnimations = R.style.anim;
+        //if (MyApplication.desktopWindow == null)
+            windowManager.addView(ContentView, layoutParams);
+    }
+
 }

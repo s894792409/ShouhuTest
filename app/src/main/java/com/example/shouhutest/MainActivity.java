@@ -118,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        Log.e(TAG, "onResume: ");
+        Log.e(TAG, "onResume: TaskID:"+getTaskId());
     }
 
     @Override
