@@ -16,6 +16,9 @@ allprojects {
     repositories {
         google()
         jcenter()
+        maven {
+            url "http://mvn.gt.getui.com/nexus/content/repositories/releases/"
+        }
     }
 }
 

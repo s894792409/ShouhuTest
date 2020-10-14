@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.PatternMatcher;
 
 import java.lang.ref.WeakReference;
 
@@ -19,12 +20,22 @@ public class KeepManager {
 
     public void registerKeep(Context context){
         IntentFilter filter = new IntentFilter();
-        filter.addAction(Intent.ACTION_SCREEN_ON);
-        filter.addAction(Intent.ACTION_SCREEN_OFF);
-        filter.addAction(Intent.ACTION_CLOSE_SYSTEM_DIALOGS);
-        filter.addAction("vivo.intent.action.UPSLIDE_PANEL_STATE_CHANGED");
+//        filter.addAction(Intent.ACTION_SCREEN_ON);
+//        filter.addAction(Intent.ACTION_SCREEN_OFF);
+//        filter.addAction("*");
+        filter.addDataPath(".*",android.os.PatternMatcher.PATTERN_SIMPLE_GLOB);
+        filter.addDataPath(".*", PatternMatcher.PATTERN_LITERAL);
+        filter.addDataPath(".*", PatternMatcher.PATTERN_PREFIX);
+        filter.addDataPath("",android.os.PatternMatcher.PATTERN_SIMPLE_GLOB);
+//        filter.addAction(Intent.ACTION_CLOSE_SYSTEM_DIALOGS);
+//        filter.addAction("vivo.intent.action.UPSLIDE_PANEL_STATE_CHANGED");
         mKeepReceiver = new KeepReceiver();
         context.registerReceiver(mKeepReceiver,filter);
+
+        IntentFilter filter2 = new IntentFilter();
+        filter2.addAction("com.example.shouhutest.alarmLoop");
+        filter2.addAction(Intent.ACTION_TIME_TICK);
+        context.registerReceiver(new LoopBroadCast(),filter2);
     }
 
 

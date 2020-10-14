@@ -12,6 +12,19 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+
+        manifestPlaceholders = [
+                //个推应用参数，请填写您申请的 GETUI_APP_ID，GETUI_APP_KEY，GETUI_APP_SECRET 值
+                GETUI_APP_ID : "U7kr7ADbeNAY1J66xbD0J",
+                GETUI_APP_KEY : "axAWhS6bCXA8NU4pCTwPw7",
+                GETUI_APP_SECRET : "JOHEdJQdTF6xUkbh5l8vOA",
+        ]
+
+        ndk {
+            // 添加项目所需 CPU 类型的最小集
+            abiFilters "armeabi", "armeabi-v7a", "x86_64", "x86"
+        }
     }
 
     buildTypes {
@@ -34,5 +47,7 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
     implementation 'io.nlopez.smartlocation:library:3.3.3'
-
+    implementation 'com.getui:sdk:2.14.1.0'
+    implementation 'com.squareup.okhttp3:okhttp:4.4.1'
+    implementation 'com.squareup.okio:okio:2.4.3'
 }

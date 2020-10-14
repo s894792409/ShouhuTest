@@ -1,34 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.shouhutest">
-    <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS"/>
-    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
-    <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
-    <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS"/>
+    <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS"/><!--允许一个程序通过账户验证方式访问账户管理-->
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" /><!--访问一个帐户列表在Accounts Service中-->
+    <uses-permission android:name="android.permission.DISABLE_KEYGUARD" /><!--允许程序禁用键盘锁转存系统信息-->
+    <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS"/><!--写入账号在线同步设置-->
 
-    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
-    <uses-permission android:name="android.permission.SYSTEM_OVERLAY_WINDOW" />
-    <!-- 网络权限 -->
-    <uses-permission android:name="android.permission.INTERNET" />
-    <!-- 用于进行网络定位 -->
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <!-- 用于访问GPS定位 -->
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
-    <!-- 用于获取wifi的获取权限，wifi信息会用来进行网络定位 -->
-    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-    <uses-permission android:name="android.permission.REORDER_TASKS" />
-    <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" /><!--悬浮窗权限-->
+    <uses-permission android:name="android.permission.SYSTEM_OVERLAY_WINDOW" /><!--允许应用显示在屏幕上层-->
+
+    <uses-permission android:name="android.permission.INTERNET" /><!-- 网络权限 -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" /><!-- 用于进行网络定位 -->
+
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /><!-- 用于访问GPS定位 -->
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" /><!--允许应用在后台定位-->
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" /><!-- 用于获取wifi的获取权限，wifi信息会用来进行网络定位 -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" /><!--允许创建前台应用-->
+    <uses-permission android:name="android.permission.REORDER_TASKS" /><!--允许程序改变Z轴排列任务-->
+    <uses-permission android:name="android.permission.DISABLE_KEYGUARD" /><!--允许程序禁用键盘锁-->
+    <uses-permission android:name="android.permission.WAKE_LOCK" /><!--允许使用PowerManager的WakeLocks保持进程在休眠时从屏幕消失-->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /><!--写入外部存储-->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" /><!--读取外部存储-->
+
     <!--前后台的切换-->
     <uses-permission android:name="android.permission.GET_TASKS"/>
     <uses-permission android:name="android.permission.INTERACT_ACROSS_USERS_FULL"/>
     <uses-permission android:name="android.permission.GET_TOP_ACTIVITY_INFO"/>
     <uses-permission android:name="android.permission.REORDER_TASKS"/>
     <uses-permission android:name="android.permission.STOP_APP_SWITCHES"/>
+
+
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <!-- iBeancon 功能所需权限 -->
+    <uses-permission android:name="android.permission.BLUETOOTH"/>
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
+    <!-- 个推电子围栏功能所需权限 -->
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
+
+    <!-- 个推自定义权限 -->
+    <uses-permission android:name="getui.permission.GetuiService.${applicationId}" />
+
+    <permission
+        android:name="getui.permission.GetuiService.${applicationId}"
+        android:protectionLevel="normal"/>
+    <!-- 个推 SDK 权限配置结束 -->
 
     <application
         android:name=".MyApplication"
@@ -63,17 +85,22 @@
         </activity>
 
 
-        <receiver android:name=".KeepActive.KeepReceiver">
+        <receiver android:name=".KeepActive.KeepReceiver"/>
+        <receiver android:name=".KeepActive.LoopBroadCast"
+            android:exported="true">
             <intent-filter>
-                <action android:name="android.intent.action.CLOSE_SYSTEM_DIALOGS"/>
-                <action android:name="android.intent.action.SCREEN_OFF"/>
-                <action android:name="android.intent.action.SCREEN_ON"/>
-                <action android:name="vivo.intent.action.UPSLIDE_PANEL_STATE_CHANGED"/>
+                <action android:name="com.example.shouhutest.alarmLoop"/>
             </intent-filter>
         </receiver>
 
         <service
             android:name=".KeepActive.ForegroundService"
+            android:persistent="true"
+            android:priority="1000"
+            android:foregroundServiceType="location" />
+
+        <service android:name="com.amap.api.location.APSService" />
+        <service android:name=".Location.LocationService"
             android:persistent="true"
             android:priority="1000"
             android:foregroundServiceType="location" />
@@ -117,6 +144,18 @@
         </service>
 
 
+        <service
+            android:name=".Push.GetuiPushService"
+            android:exported="true"
+            android:label="PushService"
+            android:process=":pushservice"/>
+
+
+        <service
+            android:name=".Push.PushIntentService"
+            android:permission="android.permission.BIND_JOB_SERVICE"/>
+
+
         <activity
             android:name=".Accessibility.AccessibilityOpenHelperActivity"
             android:excludeFromRecents="true"
@@ -126,6 +165,9 @@
 
 
         <activity android:name=".Accessibility.AccessibilityNormalSample"/>
+
+        <meta-data android:name="com.amap.api.v2.apikey" android:value="a9b0d8e32f8b536e5893d71586bb9374"/>
+
     </application>
 
 </manifest>

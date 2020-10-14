@@ -3,6 +3,8 @@ package com.example.shouhutest.Util;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 
@@ -38,5 +40,27 @@ public class AppListUtil {
         }
         return list;
     }
+
+
+
+
+    public static boolean isSystemApp(String pkgName,Context context) {
+        boolean isSystemApp = false;
+        PackageInfo pi = null;
+        try {
+            PackageManager pm = context.getPackageManager();
+            pi = pm.getPackageInfo(pkgName, 0);
+        } catch (Throwable t) {
+            t.printStackTrace();
+        }
+        // 是系统中已安装的应用
+        if (pi != null) {
+            boolean isSysApp = (pi.applicationInfo.flags & ApplicationInfo.FLAG_SYSTEM) == 1;
+            boolean isSysUpd = (pi.applicationInfo.flags & ApplicationInfo.FLAG_UPDATED_SYSTEM_APP) == 1;
+            isSystemApp = isSysApp || isSysUpd;
+        }
+        return isSystemApp;
+    }
+
 
 }

@@ -71,14 +71,18 @@ public class Desktop extends AppCompatActivity {
         mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                try {
 //                Intent intent=appInfos.get(position).getIntent();
 //                startActivity(intent);
 
-                Intent intent = getPackageManager().getLaunchIntentForPackage(appInfos.get(position).getPackageName());
-                if (intent != null) {
-                    intent.putExtra("type", "110");
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(intent);
+                    Intent intent = getPackageManager().getLaunchIntentForPackage(appInfos.get(position).getPackageName());
+                    if (intent != null) {
+                        intent.putExtra("type", "110");
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
 
             }

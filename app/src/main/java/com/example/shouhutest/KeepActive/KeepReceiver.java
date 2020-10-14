@@ -1,54 +1,34 @@
 package com.example.shouhutest.KeepActive;
 
 import android.app.ActivityManager;
-import android.app.Instrumentation;
 import android.app.PendingIntent;
 import android.app.WallpaperManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.PixelFormat;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
-import android.os.Bundle;
-import android.os.Debug;
-import android.os.SystemClock;
-import android.provider.Settings;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.LinearLayout;
-import android.widget.Toast;
-
-import androidx.annotation.ContentView;
-import androidx.annotation.RequiresApi;
 
 import com.example.shouhutest.Accessibility.AccessibilityOperator;
-import com.example.shouhutest.Account.AccountHelper;
-import com.example.shouhutest.Account.AuthenticationService;
 import com.example.shouhutest.AppList;
-import com.example.shouhutest.Desktop.AppInfo;
-import com.example.shouhutest.Desktop.DeskTopGridViewBaseAdapter;
 import com.example.shouhutest.Desktop.Desktop;
 import com.example.shouhutest.Desktop.DesktopWindow;
 import com.example.shouhutest.Location.LocationTest;
 import com.example.shouhutest.Location.LocationTest2;
-import com.example.shouhutest.MainActivity;
 import com.example.shouhutest.MyApplication;
 import com.example.shouhutest.R;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
-class KeepReceiver extends BroadcastReceiver {
+public class KeepReceiver extends BroadcastReceiver {
     String TAG = "KeepReceiver";
 
     private final String SYSTEM_DIALOG_REASON_KEY = "reason";
@@ -81,6 +61,7 @@ class KeepReceiver extends BroadcastReceiver {
                 }
 
                 if (!MyApplication.desktopWindow.isShowing) MyApplication.desktopWindow.showDesktopWindow();
+
 //                showDesktopWindow(context);
 
 //                addDesktopWindow(context);
@@ -124,6 +105,8 @@ class KeepReceiver extends BroadcastReceiver {
                     AccessibilityOperator.getInstance().clickBackKey();
                 }
 
+            }else{
+                Log.e(TAG, "onReceive: 未知广播："+intent.getAction() );
             }
 
         } catch (Exception e) {
